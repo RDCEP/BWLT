@@ -1,0 +1,9 @@
+escape ^Zz
+shelltitle "> |bash"
+startup_message off
+
+bindkey "^[^[[D" prev
+bindkey "^[^[[C" next
+
+hardstatus alwayslastline
+hardstatus string '%{= dg} %H %{g}| %{B}%l %{G}|%=%?%{d}%-w%?%{r}(%{d}%n %t%? {%u} %?%{r})%{d}%?%+w%?%=%{G}| %{+b r}%1`%{-} | %{+b B}%d %M %c:%s '
