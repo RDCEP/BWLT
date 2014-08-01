@@ -1,17 +1,3 @@
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-ls
-unzip xml_to_text-.6.tar.gz
-vi xml_to_text-.6.tar.gz 
-rm xml_to_text-.6.tar.gz 
-mysql -u root -p
 cd /home/ingest/UniversalIngester/
 ls
 rm UniversalIngestControl_miles.csv
@@ -1998,3 +1984,17 @@ python statread.py climate anur
 vi statread.py 
 python statread.py climate anur
 exit
+vi statread.py 
+vi citationCrawler.py 
+ls
+rm *.txt
+rm *.png
+rm keywordadd.pyc
+ls
+git init
+git config --global user.name "mgrogger"
+git config --global user.email "mgrogger@gmail.com"
+git add .
+git commit -a -m "pushing all"
+git remote add origin https://github.com/RDCEP/BWLT
+git push -u origin master

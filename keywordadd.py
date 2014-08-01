@@ -173,10 +173,10 @@ def writeTwo(keywd, keywd2, dtb, arg, ngrams=None):
 	createDoc(doc2)
 	if ngrams is not None:
         	addToDoc(cur, ID, dtb, doc, keywd, args = arg, ngram=ngrams)
-		addToDoc(cur, ID, dtb, doc2, keywd, args = arg, ngram=ngrams)
+		addToDoc(cur, ID, dtb, doc2, keywd2, args = arg, ngram=ngrams)
 	else: 
 		addToDoc(cur, ID, dtb, doc, keywd, args = arg)
-                addToDoc(cur, ID, dtb, doc2, keywd, args = arg)
+                addToDoc(cur, ID, dtb, doc2, keywd2, args = arg)
 	cur.close()
         dbs.close()
 
