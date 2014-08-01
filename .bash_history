@@ -1,93 +1,3 @@
-cd /home/ingest/UniversalIngester/
-ls
-vi statread.py 
-python statread.py integrated ar "docID"
-cd /home/ingest/UniversalIngester/
-ls
-vi statread.py 
-python statread.py integrated ar "docID"
-cd /home/ingest/UniversalIngester/
-vi statread.py 
-python statread.py integrated ar "docID"
-cd /home/ingest/UniversalIngester/
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-python statread.py energy ar "docID"
-vi statread.py 
-python statread.py energy ar "docID"
-vi statread.py 
-python statread.py energy ar "docID"
-python statread.py "integrated assessment" ar "docID"
-python statread.py "climate change" ar "docID"
-vi statread.py 
-python statread.py "climate change" ar "docID"
-vi statread.py 
-python statread.py "climate change" ar "docID"
-python statread.py integrated  ar "docID"
-cd /home/ingest/UniversalIngester/
-ls
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-vi statread.py 
-python statread.py integrated ar "docID"
-cd /home/ingest/UniversalIngester/
-python statread.py energy ar "docID"
-vi statready.py
-vi statread.py
-python statread.py energy ar "docID" graph.png
-vi graph.png
-cd /home/ingest/
-cd UniversalIngester/
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-cd /home/ingest/UniversalIngester/
-python statread.py energy ar "docID" graph.png
-vi statread.py 
-python statread.py energy ar "docID" graph.png
-vi statread.py 
-python statread.py energy ar "docID" graph.png
-vi statread.py 
-python statread.py energy ar "docID" graph.png
-vi statread.py 
-python statread.py energy ar "docID" graph.png
-cd /home/ingest/UniversalIngester/
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
-python statread.py energy ar "docID" graph1.png
-vi statread.py 
 python statread.py energy ar "docID" graph1.png
 vi statread.py 
 python statread.py energy ar "docID" graph1.png
@@ -1998,3 +1908,93 @@ python climate anur --year=True
 python statread.py  climate anur --year=True
 vi statread.py 
 python statread.py  climate anur --year=True
+cd /home/ingest/UniversalIngester/
+ls
+vi citationCrawler.py 
+python citationCrawler.py anur
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur
+vi citationCrawler.py 
+python citationCrawler.py anur
+vi citationCrawler.py 
+python citationCrawler.py anur
+vi citationCrawler.py 
+python citationCrawler.py anur
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=energy
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+vi citationCrawler.py 
+python citationCrawler.py anur --keyword=climate
+python citationCrawler.py anur
+vi /home/ingest/UniversalIngester/TEST_UniversalIngestControl_annurev.csv 
+cd /mnt/AnnualReviews/
+ls
+cd flash0/
+ls
+cd micro.2003.57.issue-1/
+ls
+cd annurev.micro.57.030502.090851
+ls
+vi annurev.micro.57.030502.090851.xml 
+mysql -u root -p
+cd /home/ingest/UniversalIngester/
+ls
+cd /home/miles/
+python statread.py climate anur 
+python statread.py climate anur --year=true
+python statread.py energy --keyword2=policy
+python statread.py energy anur --keyword2=policy
+python statread.py climate anur --keyword2=policy
+python statread.py climate anur --keyword2=policy --year=True
+vi statread.py j
+python statread.py energy anur --keyword2=policy
+python statread.py energy anur --keyword2=policy --year=True
+python statread.py climate anur --keyword2=agriculture
+python statread.py climate anur --keyword2=agriculture --year=true
+mysql -u root -p
+python
+ls
+vi journalNames.txt 
+ls
+vi keywordadd.py 
+python keywordadd.py integrated anur
+vi keywordadd.py 
+vi statread.py 
+python statread.py climate anur
+vi statread.py 
+python statread.py climate anur
+vi keywordadd.py
+python statread.py climate anur
+vi statread.py 
+python statread.py climate anur
+exit

@@ -8,13 +8,13 @@ def createDoc(doc):
         file = open(doc, "w")
         file.close()
 
-def makeID():
+def makeID(): #This is important when running this program from the command line because it generates a keywordID
         file = open("ID.txt", "w")
         first = str(0)
         file.write(first)
         file.close()
 
-def uniTable(cur, table_char,dtb):
+def uniTable(cur, table_char,dtb): #This just allows for changing between databases with similar basic structure
         cur.execute("SHOW TABLES FROM %s LIKE '%%%s%%'" % (dtb, table_char))
         val=cur.fetchall()
         table=val[0][0]
@@ -27,7 +27,7 @@ def uniCol(cur, table, col_char, type):
                 if type in val[i][1]:
                         return val[i][0]
 
-def writeArtID(cur, dtb):
+def writeArtID(cur, dtb): #The ngrams are stored as either an .xml.csv or .txt.csv preceded by the doi of the article. Doi's in mysql are formatted differently, so this method is used to   				properly format them.
 	table = uniTable(cur, 'oc', dtb) 
 	article = uniCol(cur, table, 'doi', 'varchar')
 	cur.execute("SELECT %s FROM %s" % (article, table))
@@ -42,7 +42,7 @@ def writeArtID(cur, dtb):
 		articles.append(artID)
 	return articles
 
-def nGramSearch(cur, keyword, dtb, doc):
+def nGramSearch(cur, keyword, dtb, doc): #The ngram search is long and tedious. It takes the keyword that is given, and the document that addToDoc() makes. Then, it takes the doi given by  					       the writeArtID() method and looks for the csv that correlates to that article. When it finds the article, it searches for the keyword in the file. 					    If it is found, it checks to make sure the doc Id correlating with the doi is not already stored, and, if it isn't, stores the docID. It has a very 					 long run time, so it is an optional method.
 	table = uniTable(cur, 'oc', dtb)
 	docID = uniCol(cur, table, 'id', 'int')
 	articleID = uniCol(cur, table, 'doi', 'varchar')
@@ -91,7 +91,7 @@ def tup2int(tup):
 def tup2str(tup):
         return str(','.join(str(x) for x in tup))
 
-def addToDoc(cur, ID, dtb, doc, keyword, args = None):
+def addToDoc(cur, ID, dtb, doc, keyword, args = None, ngram = None): #This method, while somewhat long is actually pretty simple. All it does is accept an ID number for the keyword, the    									   doc name of where the docID should be saved, the keyword, and, if only the docID is necessary, a keyword. If you want 									ngrams, you can specify that too through optional arguments at the command line, or when you call writeOne() or 									     wirteTwo() from another program. Without the Ngrams, it just searches the Titles and Abstracts in the MySQL database, 									  searchign for the keyword. If found, it records the docID.
 	table = uniTable(cur,'oc',dtb)
 	docId = uniCol(cur,table, 'id', 'int')
 	title = uniCol(cur,table, 'itl', 'text')
@@ -120,13 +120,14 @@ def addToDoc(cur, ID, dtb, doc, keyword, args = None):
 			file.write("%s\n" % keyword)
 		if args=="KeywordID":
 			file.write("%d\n" % ID)
-#	artList= nGramSearch(cur, keyword, dtb, doc)
-#	for i in range(len(artList)):
-#		if args==None:
-#			print("INSERTED: KEYWORDID: %d, KEYWORD: '%s' , DOCID: %d)" % (ID, keyword, tup2int(row)))
-#			file.write("KeywordID: %d\nKeyword: %s\nDocID: %d\n  \n" % (ID, keyword, artList[i]))
-#		if args=="docID":
-#			file.write("%d\n" % artList[i])
+	if ngram is not None:	
+		artList= nGramSearch(cur, keyword, dtb, doc)
+		for i in range(len(artList)):
+			if args==None:
+				print("INSERTED: KEYWORDID: %d, KEYWORD: '%s' , DOCID: %d)" % (ID, keyword, tup2int(row)))
+				file.write("KeywordID: %d\nKeyword: %s\nDocID: %d\n  \n" % (ID, keyword, artList[i]))
+			if args=="docID":
+				file.write("%d\n" % artList[i])
         file.close()
         ID += 1
         Id = str(ID)
@@ -135,7 +136,7 @@ def addToDoc(cur, ID, dtb, doc, keyword, args = None):
         	file.write("%s\n" %Id)
         	file.close()
 
-def makeUnion(doc, doc2):
+def makeUnion(doc, doc2): #Make union is very simple. It takes two documents which contain the docID's for their separate keyword matches and sees if there are any docIDs that are in both.
 	store=[]
         Idnum=[line.strip() for line in open(doc)]
         Idnum2=[line.strip() for line in open(doc2)]
@@ -149,17 +150,20 @@ def makeUnion(doc, doc2):
 			file.write("%s\n" % store[i])
 	
 
-def writeOne(keywd, dtb, arg):
+def writeOne(keywd, dtb, arg, ngrams=None): #writeOne and write two should only be used by other programs when they call this one. It is not used at the command line.
 	dbs = mdb.connect(user = "root", passwd = "root", db = dtb)
 	cur = dbs.cursor()
 	ID = 0
 	doc = "%s.txt" % keywd
 	createDoc(doc)
-	addToDoc(cur, ID, dtb, doc, keywd, args = arg)
+	if ngrams is not None:
+		addToDoc(cur, ID, dtb, doc, keywd, args = arg, ngram=ngrams)
+	else:
+		addToDoc(cur, ID, dtb, doc, keywd, args = arg)
 	cur.close()
 	dbs.close()
 
-def writeTwo(keywd, keywd2, dtb, arg):
+def writeTwo(keywd, keywd2, dtb, arg, ngrams=None):
 	dbs = mdb.connect(user = "root", passwd = "root", db = dtb)
         cur = dbs.cursor()
         ID = 0
@@ -167,15 +171,20 @@ def writeTwo(keywd, keywd2, dtb, arg):
 	doc2 = "%s.txt" % keywd2
         createDoc(doc)
 	createDoc(doc2)
-        addToDoc(cur, ID, dtb, doc,  keywd, args = arg)
-	addToDoc(cur, ID, dtb, doc2,  keywd2, args = arg)
-        cur.close()
+	if ngrams is not None:
+        	addToDoc(cur, ID, dtb, doc, keywd, args = arg, ngram=ngrams)
+		addToDoc(cur, ID, dtb, doc2, keywd, args = arg, ngram=ngrams)
+	else: 
+		addToDoc(cur, ID, dtb, doc, keywd, args = arg)
+                addToDoc(cur, ID, dtb, doc2, keywd, args = arg)
+	cur.close()
         dbs.close()
 
 if __name__=='__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('keywrd')
 	parser.add_argument('database')
+	parser.add_argument('--ngram')
 	args = parser.parse_args()
 	dbs = mdb.connect(user = "root", passwd = "root", db = args.database);
 	cur = dbs.cursor()
@@ -185,7 +194,10 @@ if __name__=='__main__':
 	        lineList = file.readlines()
 	        file.close()
 	        ID = int(lineList[-1])
-		addToDoc(cur, ID, args.database, doc, args.keywrd)
+		if args.ngram:
+			addToDoc(cur, ID, args.database, doc, args.keywrd, ngram=true)
+		else:
+			addToDoc(cur, ID, args.database, doc, args.keywrd)
 		cur.close()
 	        dbs.close()
 	else:
@@ -193,6 +205,9 @@ if __name__=='__main__':
 	        makeID()
 	        file = open("ID.txt","r")
 	        ID = int(file.read())
-	        addToDoc(cur, ID, args.database, doc, args.keywrd)
+	        if args.ngram:
+                        addToDoc(cur, ID, args.database, doc, args.keywrd, ngram=true)
+                else:
+                        addToDoc(cur, ID, args.database, doc, args.keywrd)
 		cur.close()
 	        dbs.close()

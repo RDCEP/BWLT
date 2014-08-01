@@ -12,6 +12,7 @@ parser.add_argument('--keyword2')
 parser.add_argument('database')
 parser.add_argument('--file')
 parser.add_argument('--year')
+parser.add_argument('--ngram')
 args= parser.parse_args()
 
 
@@ -51,7 +52,7 @@ def plotUnion(lst):  #This method is designed takes a list as a parameter, which
 		ID=int(lst[i])
 		cur.execute("SELECT %s, %s, %s FROM %s WHERE %s=%d" % (title, journal, year, table, docId,ID))
 		info = cur.fetchall()
-		ident.append(tup2str(info[0]))
+		ident.append(tup2str(info))
 		cur.execute("SELECT %s, %s FROM %s WHERE %s=%d" % (last, first, table2, docId, ID))
 		names= cur.fetchall()
 		name = []
@@ -65,7 +66,10 @@ def plotUnion(lst):  #This method is designed takes a list as a parameter, which
 		file.write("%s\n"%item)
 
 def plotOne(arg): #plotOne() is designed to plot the frequency of a keyword across the journals contained in a database, or by the frequency throughout the years of publication for all of  			the journals combined.
-	ka.writeOne(args.keyword, args.database, "%s" % docId) #In plotOne, as well as plotTwo() a separate keyword hunter is used. This allows the plotting program to run more smoothly and								     offers other programs the ability to sift through keywords as well.
+	if args.ngram:
+		ka.writeOne(args.keyword, args.database, "%s" % docId, ngram=true) #In plotOne, as well as plotTwo() a separate keyword hunter is used. This allows the plotting program to  											run more smoothly and offers other programs the ability to sift through keywords as well.
+	else: 
+		ka.writeOne(args.keyword, args.database, "%s" % docId)
 	doc = "%s.txt" % args.keyword
 	docnumbers = [line.strip() for line in open(doc)]
 	stats = []
@@ -102,7 +106,10 @@ def plotOne(arg): #plotOne() is designed to plot the frequency of a keyword acro
 	plt.show()	
 
 def plotTwo(arg): #plotTwo() and plotOne() are very similar, but plotTwo() has a few more features and is a bit more robust. It follows much the same process as plotOne(), but plots an     			extra keyword as well as the union - if any exists - between the two keywords within a single document. Like plotOne(), plotTwo() needs to be passed an argument, which,  		     in this case is either the journalID or the publication year.
-	ka.writeTwo(args.keyword, args.keyword2, args.database, "%s" % docId)
+	if args.ngram:
+		ka.writeTwo(args.keyword, args.keyword2, args.database, "%s" % docId, ngram=true)
+	else:
+		ka.writeTwo(args.keyword, args.keyword2, args.database, "%s" % docId)
 	doc = "%s.txt" % args.keyword
 	doc2 = "%s.txt" % args.keyword2
 	ka.makeUnion(doc, doc2) #makeUnion() is a simple function that simply takes two documents and searches them for similar document numbers within each of them. If any unions exist,   				      they are saved in a document simply called union.txt
